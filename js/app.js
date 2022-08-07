@@ -103,7 +103,9 @@ productos.forEach(producto => {
 let carritoHTML = document.getElementById("carrito");
 
 const recuperarLocalStorage = () => {
-    if(localStorage != null){
+    console.log(localStorage.getItem("listaCompra"));
+    if(localStorage != null && localStorage.getItem("listaCompra") != "" ){
+
         let localCarrito = JSON.parse(localStorage.getItem("listaCompra"));
         for (let i = 0; i < localCarrito.length; i++) {
             const element = localCarrito[i].id;
@@ -229,11 +231,12 @@ const filtrarProductos = e=>{
 }
 
 
-
 const guardarLocalStorage = () =>{
     localStorage.setItem("listaCompra", JSON.stringify(carrito));
 }
 
-
+if(!localStorage.getItem("listaCompra")){
+    localStorage.setItem("listaCompra",JSON.stringify(carrito))
+}
 
 recuperarLocalStorage();
