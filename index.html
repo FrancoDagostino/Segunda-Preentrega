@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
+    integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <h1>Productos de PC</h1>
+        <div>
+            <button id="btnIconEcomercce"class="icon"><i class="fa-brands fa-itch-io"></i></button>
+            <label class="cantProd"></label>
+        </div>
+    </header>
+    
+    <main>
+        <div class="Card">
+            <h2>Productos Destacados</h2>
+            <hr>
+            <div>
+                <div class="categorias">
+                    <h3>Categorias:</h3>
+                    <form id="formFiltros">
+                          <input type="radio" id="mother" name="categorias" value="mother">
+                          <label for="mother">Mother</label><br>
+                          <input type="radio" id="cpu" name="categorias" value="cpu">
+                          <label for="cpu">CPU</label><br>
+                          <input type="radio" id="ram" name="categorias" value="ram" checked="true">
+                          <label for="ram">RAM</label><br>
+                          <input type="radio" id="grafica" name="categorias" value="grafica">
+                          <label for="grafica">Tarjeta Grafica</label><br>
+                          <input type="submit" id="filtrarProduc" name="buscar" value="Buscar">
+                    </form>
+                </div>
+                    <hr>
+            </div>
+            <div id="productos"class="cardProducto">
+            </div>
+        </div>
+        <div id="carrito" class="CardCarrito animate__animated animate__fadeInLeft inv ">
+        </div>
+    </main>
+</body>
+<script src="js/app.js"></script>
+</html>
