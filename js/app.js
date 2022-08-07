@@ -76,6 +76,9 @@ let Divcarrito = document.querySelector(".CardCarrito");
 console.log(contenedorMain)
 for(const producto of productos) producto.sumaIva();
 
+
+
+
 /* agregar productos al carrito */
 productos.forEach(producto => {
     const section = document.createElement('section');
@@ -98,6 +101,16 @@ productos.forEach(producto => {
 
 
 let carritoHTML = document.getElementById("carrito");
+
+const recuperarLocalStorage = () => {
+    if(localStorage != null){
+        let localCarrito = JSON.parse(localStorage.getItem("listaCompra"));
+        for (let i = 0; i < localCarrito.length; i++) {
+            const element = localCarrito[i].id;
+            agregarCarrito(element);
+        }
+    }
+}
 
 const eliminarCarrito= (productoId)=>{
     const item = carrito.find(c => c.id === productoId);
@@ -134,6 +147,7 @@ const actualizaCarrito = () =>{
     <hr/>
     </section>`;
     })
+    guardarLocalStorage();
 }
 
 
@@ -213,3 +227,13 @@ const filtrarProductos = e=>{
     })
 
 }
+
+
+
+const guardarLocalStorage = () =>{
+    localStorage.setItem("listaCompra", JSON.stringify(carrito));
+}
+
+
+
+recuperarLocalStorage();
