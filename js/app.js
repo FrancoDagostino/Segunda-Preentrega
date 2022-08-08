@@ -154,21 +154,13 @@ const actualizaCarrito = () =>{
 
 
 let btnIconEcomercce = document.getElementById("btnIconEcomercce");
-console.log(btnIconEcomercce);
 
 /*Mostrar/Ocultar Div Carrito*/
 btnIconEcomercce.addEventListener('click',()=>{
 
-    ocultarCarrito();
+    Divcarrito.classList = Divcarrito.classList[1] == "inv" ? " vis CardCarrito  animate__animated animate__fadeInRight" : "  CardCarrito inv  animate__animated animate__fadeInLeft";
 })
 
-const ocultarCarrito = () =>{
-    if(Divcarrito.classList[1] == "inv"){
-        Divcarrito.classList = "CardCarrito vis animate__animated animate__fadeInRight";
-    }else{
-        Divcarrito.classList = "CardCarrito  inv animate__animated animate__fadeInLeft  "; 
-    }
-}
 
 /*Filtrar productos */
 
@@ -181,9 +173,8 @@ formFiltro.addEventListener("submit",e=>{
 
 const filtrarProductos = e=>{
     e.preventDefault();
-    // let mother = document.getElementById("mother").checked;
-    Divcarrito.classList = "inv";
-    
+
+   
     let categoriaFiltrar
     if(document.getElementById("mother").checked){
         categoriaFiltrar = document.getElementById("mother").value;
@@ -206,9 +197,7 @@ const filtrarProductos = e=>{
 
     let prodFiltrado = productos.filter(p => p.nombre.toLowerCase() == categoriaFiltrar.toLowerCase());
 
-    // prodFiltrado.push(item)
 
-    console.log("producto",prodFiltrado);
     contenedorMain.innerHTML = "";
     prodFiltrado.forEach(producto => {
         const section = document.createElement('section');
@@ -227,6 +216,7 @@ const filtrarProductos = e=>{
             agregarCarrito(producto.id);
         });
     })
+    Divcarrito.classList = "CardCarrito inv  animate__animated animate__fadeInLeft";
 
 }
 
