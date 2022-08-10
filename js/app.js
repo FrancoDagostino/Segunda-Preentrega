@@ -60,11 +60,6 @@ productos.push(new Productos(7,"RAM",6000,5));
 
 
 
-// const json = JSON.stringify(productos);
-
-// localStorage.setItem('miProducto',json);
-
-// console.log(json);
 
 let contenedorMain = document.getElementById("productos");
 let padre = document.getElementById("button");
@@ -73,28 +68,27 @@ let cantProd = document.querySelector(".cantProd")
 let Divcarrito = document.querySelector(".CardCarrito");
 
 
-console.log(contenedorMain)
 for(const producto of productos) producto.sumaIva();
 
 
 
 
 /* agregar productos al carrito */
-productos.forEach(producto => {
+productos.forEach(({nombre,precio,id}) => {
     const section = document.createElement('section');
     section.innerHTML += `
-    <h3>${producto.nombre}</h3>
+    <h3>${nombre}</h3>
     <img src="imgs/mother.webp" alt="" width="250px" height="180px">
     <div class="addProducto"> 
-        <h4>$ ${producto.precio}</h4>
-        <button id=agregar${producto.id} class="iconAdd"><i class="fas fa-plus-circle"></i></button>
+        <h4>$ ${precio}</h4>
+        <button id=agregar${id} class="iconAdd"><i class="fas fa-plus-circle"></i></button>
     </div>`;
 
  contenedorMain.appendChild(section);
-    const boton = document.getElementById(`agregar${producto.id}`);
+    const boton = document.getElementById(`agregar${id}`);
 
         boton.addEventListener('click',()=>{
-        agregarCarrito(producto.id);
+        agregarCarrito(id);
     }); 
 })
 
@@ -102,8 +96,9 @@ productos.forEach(producto => {
 
 let carritoHTML = document.getElementById("carrito");
 
+/* ver para optimizar*/
 const recuperarLocalStorage = () => {
-    console.log(localStorage.getItem("listaCompra"));
+
     if(localStorage != null && localStorage.getItem("listaCompra") != "" ){
 
         let localCarrito = JSON.parse(localStorage.getItem("listaCompra"));
@@ -114,11 +109,20 @@ const recuperarLocalStorage = () => {
     }
 }
 
+
+const agregarCarrito = (productoId) =>{
+    const item = productos.find(p => p.id === productoId)
+    carrito.push(item);
+    acumCarr++;
+    cantProd.innerHTML = `${acumCarr}`
+    actualizaCarrito();
+}
+
 const eliminarCarrito= (productoId)=>{
     const item = carrito.find(c => c.id === productoId);
     let indice = carrito.indexOf(item)
     carrito.splice(indice,1)
-    acumCarr -=1;
+    acumCarr--;
     cantProd.innerHTML = `${acumCarr}`
     if(acumCarr == 0){
         cantProd.innerHTML = ""
@@ -126,30 +130,21 @@ const eliminarCarrito= (productoId)=>{
     actualizaCarrito();
 }
 
-const agregarCarrito = (productoId) =>{
-    const item = productos.find(p => p.id === productoId)
-    carrito.push(item);
-    acumCarr += 1;
-    cantProd.innerHTML = `${acumCarr}`
-    actualizaCarrito();
-}
-
-
 const actualizaCarrito = () =>{
     carritoHTML.innerHTML = "";
-    carrito.forEach(prod => {
+    carrito.forEach(({nombre,precio,id}) => {
         carritoHTML.innerHTML+=`
-    <section>
-    <h3>${prod.nombre}</h3>
-    <img src="imgs/mother.webp" alt="" width="250px" height="180px">
-    <div class="addProducto"> 
-    <h4>$ ${prod.precio}</h4>
-    <button onclick="eliminarCarrito(${prod.id})" class="iconAdd"><i class="fas fa-trash"></i></button>
-    </div>
-    <hr/>
-    </section>`;
+        <section>
+        <h3>${nombre}</h3>
+        <img src="imgs/mother.webp" alt="" width="250px" height="180px">
+        <div class="addProducto"> 
+            <h4>$ ${precio}</h4>
+            <button onclick="eliminarCarrito(${id})" class="iconAdd"><i class="fas fa-trash"></i></button>
+        </div>
+        <hr/>
+        </section>`;
     })
-    guardarLocalStorage();
+    localStorage.setItem("listaCompra", JSON.stringify(carrito));
 }
 
 
@@ -199,34 +194,28 @@ const filtrarProductos = e=>{
 
 
     contenedorMain.innerHTML = "";
-    prodFiltrado.forEach(producto => {
+    prodFiltrado.forEach( ({nombre,precio,id}) => {
         const section = document.createElement('section');
         section.innerHTML += `
-        <h3>${producto.nombre}</h3>
+        <h3>${nombre}</h3>
         <img src="imgs/mother.webp" alt="" width="250px" height="180px">
         <div class="addProducto"> 
-            <h4>${producto.precio}</h4>
-            <button id=agregar${producto.id} class="iconAdd"><i class="fas fa-plus-circle"></i></button>
+            <h4>${precio}</h4>
+            <button id=agregar${id} class="iconAdd"><i class="fas fa-plus-circle"></i></button>
         </div>`;
     
         contenedorMain.appendChild(section);
-        const boton = document.getElementById(`agregar${producto.id}`);
+        const boton = document.getElementById(`agregar${id}`);
     
             boton.addEventListener('click',()=>{
-            agregarCarrito(producto.id);
+            agregarCarrito(id);
         });
     })
     Divcarrito.classList = "CardCarrito inv  animate__animated animate__fadeInLeft";
 
 }
 
-
-const guardarLocalStorage = () =>{
-    localStorage.setItem("listaCompra", JSON.stringify(carrito));
-}
-
-if(!localStorage.getItem("listaCompra")){
-    localStorage.setItem("listaCompra",JSON.stringify(carrito))
-}
+localStorage.getItem("listaCompra") ?? localStorage.setItem("listaCompra",JSON.stringify(carrito));
 
 recuperarLocalStorage();
+
