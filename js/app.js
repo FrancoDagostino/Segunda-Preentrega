@@ -114,11 +114,15 @@ const agregarCarrito = (productoId) =>{
     carrito.push(item);
     acumCarr++;
     cantProd.innerHTML = `${acumCarr}`
-    Swal.fire(
-        'El articulo fue agregado!',
-        '',
-        'success'
-      )
+    Swal.fire({
+        position: 'bottom-end',
+        icon: 'success',
+        title: 'El árticulo fue agregado al carrito',
+        showConfirmButton: false,
+        timer: 1000,
+        width:400
+        
+      })
     actualizaCarrito();
 }
 
