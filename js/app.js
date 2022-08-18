@@ -67,7 +67,6 @@ let button = document.createElement("div");
 let cantProd = document.querySelector(".cantProd")
 let Divcarrito = document.querySelector(".CardCarrito");
 
-
 for(const producto of productos) producto.sumaIva();
 
 
@@ -115,6 +114,11 @@ const agregarCarrito = (productoId) =>{
     carrito.push(item);
     acumCarr++;
     cantProd.innerHTML = `${acumCarr}`
+    Swal.fire(
+        'El articulo fue agregado!',
+        '',
+        'success'
+      )
     actualizaCarrito();
 }
 
@@ -127,6 +131,12 @@ const eliminarCarrito= (productoId)=>{
     if(acumCarr == 0){
         cantProd.innerHTML = ""
     }
+
+    Swal.fire(
+        'El articulo fue eliminado!',
+        '',
+        'success'
+      )
     actualizaCarrito();
 }
 
@@ -144,7 +154,20 @@ const actualizaCarrito = () =>{
         <hr/>
         </section>`;
     })
+    
     localStorage.setItem("listaCompra", JSON.stringify(carrito));
+    carritoHTML.innerHTML+=`<button id="btnFinalizarCompra">Finalizar Compra</button>`;
+    
+    let btnFinalizarCompra = document.getElementById("btnFinalizarCompra");
+
+    btnFinalizarCompra.addEventListener('click',()=>{
+        const total = carrito.reduce((acc,c) => acc + c.precio,0);
+        Swal.fire(
+            'Su compra se realizo con Exito!',
+            `El monto total es: ${total}`,
+            'success'
+          )
+    })
 }
 
 
