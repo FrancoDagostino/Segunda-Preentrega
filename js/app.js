@@ -1,12 +1,13 @@
 
 
 class Productos{
-    constructor (id,nombre,precio,stock){
+    constructor (id,nombre,precio,stock,img){
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.vendido = false;
         this.stock = stock
+        this.img = img
     }
     
     sumaIva(){
@@ -32,70 +33,77 @@ class Productos{
 // }
 
 // class ListaCompra{
-//     constructor(id,lista,metodopago,descuento){
-//         this.id = id;
-//         this.lista = lista;
-//         this.metodopago = metodopago;
-//         this.descuento = descuento;
-//     }
-// }
+    //     constructor(id,lista,metodopago,descuento){
+        //         this.id = id;
+        //         this.lista = lista;
+        //         this.metodopago = metodopago;
+        //         this.descuento = descuento;
+        //     }
+        // }
+    }
+    
+    
+    const productos =[];
+    const listacompras = [];
+    let carrito = [];
+    let acumCarr= 0;
+    const contenedorMain = document.getElementById("productos");
+    const padre = document.getElementById("button");
+    const button = document.createElement("div");
+    const cantProd = document.querySelector(".cantProd")
+    const Divcarrito = document.querySelector(".CardCarrito");
+    const carritoHTML = document.getElementById("carrito");
+    
+    /* Consumir API Producto*/
+    
+    
+const apiProductos = async() =>{
+        
+        const response = await fetch(`https://restserver-node-producto.herokuapp.com/api/productos`);
+
+        const {producto} = await response.json();
+        console.log(producto);
+
+        producto.forEach(dp => {
+            productos.push(new Productos(dp._id,dp.nombre.toString(),dp.precio,dp.stock,dp.img))
+        });
 }
 
+const mostrarProductos = async() =>{
+    await apiProductos();
+    for(const producto of productos) producto.sumaIva();
+    productos.forEach(({nombre,precio,id,img}) => {
+        const section = document.createElement('section');
+        section.innerHTML += `
+        <h3>${nombre}</h3>
+        <img src="${img}" alt="" width="250px" height="180px">
+        <div class="addProducto"> 
+            <h4>$ ${precio}</h4>
+            <button id=agregar${id} class="iconAdd"><i class="fas fa-plus-circle"></i></button>
+        </div>`;
+    
+     contenedorMain.appendChild(section);
+        const boton = document.getElementById(`agregar${id}`);
+    
+            boton.addEventListener('click',()=>{
+                Swal.fire({
+                    position: 'bottom-end',
+                    icon: 'success',
+                    title: 'El árticulo fue agregado al carrito',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    width:400
+                    
+                  })
+            agregarCarrito(id);
+        }); 
+    })
+    
+}
+
+mostrarProductos();
 
 
-const productos =[];
-const listacompras = [];
-let carrito = [];
-let acumCarr= 0;
-
-productos.push(new Productos(1,"Microprocesador",50000,10));
-productos.push(new Productos(2,"RAM",6000,5));
-productos.push(new Productos(3,"Disco Duro",5000,6));
-productos.push(new Productos(4,"Placa de Video",80000,3));
-productos.push(new Productos(5,"Fuente", 17000,4));
-productos.push(new Productos(6,"RAM",6000,5));
-productos.push(new Productos(7,"RAM",6000,5));
-productos.push(new Productos(7,"RAM",6000,5));
-
-
-
-
-
-let contenedorMain = document.getElementById("productos");
-let padre = document.getElementById("button");
-let button = document.createElement("div");
-let cantProd = document.querySelector(".cantProd")
-let Divcarrito = document.querySelector(".CardCarrito");
-
-for(const producto of productos) producto.sumaIva();
-
-
-
-
-/* agregar productos al carrito */
-productos.forEach(({nombre,precio,id}) => {
-    const section = document.createElement('section');
-    section.innerHTML += `
-    <h3>${nombre}</h3>
-    <img src="imgs/mother.webp" alt="" width="250px" height="180px">
-    <div class="addProducto"> 
-        <h4>$ ${precio}</h4>
-        <button id=agregar${id} class="iconAdd"><i class="fas fa-plus-circle"></i></button>
-    </div>`;
-
- contenedorMain.appendChild(section);
-    const boton = document.getElementById(`agregar${id}`);
-
-        boton.addEventListener('click',()=>{
-        agregarCarrito(id);
-    }); 
-})
-
-
-
-let carritoHTML = document.getElementById("carrito");
-
-/* ver para optimizar*/
 const recuperarLocalStorage = () => {
 
     if(localStorage != null && localStorage.getItem("listaCompra") != "" ){
@@ -114,15 +122,7 @@ const agregarCarrito = (productoId) =>{
     carrito.push(item);
     acumCarr++;
     cantProd.innerHTML = `${acumCarr}`
-    Swal.fire({
-        position: 'bottom-end',
-        icon: 'success',
-        title: 'El árticulo fue agregado al carrito',
-        showConfirmButton: false,
-        timer: 1000,
-        width:400
-        
-      })
+
     actualizaCarrito();
 }
 
@@ -146,14 +146,15 @@ const eliminarCarrito= (productoId)=>{
 
 const actualizaCarrito = () =>{
     carritoHTML.innerHTML = "";
-    carrito.forEach(({nombre,precio,id}) => {
+    carrito.forEach(({nombre,precio,id,img}) => {
+        console.log(id);
         carritoHTML.innerHTML+=`
         <section>
         <h3>${nombre}</h3>
-        <img src="imgs/mother.webp" alt="" width="250px" height="180px">
+        <img src="${img}" alt="" width="250px" height="180px">
         <div class="addProducto"> 
             <h4>$ ${precio}</h4>
-            <button onclick="eliminarCarrito(${id})" class="iconAdd"><i class="fas fa-trash"></i></button>
+            <button onclick="eliminarCarrito('${id}')" class="iconAdd"><i class="fas fa-trash"></i></button>
         </div>
         <hr/>
         </section>`;
@@ -242,7 +243,12 @@ const filtrarProductos = e=>{
 
 }
 
-localStorage.getItem("listaCompra") ?? localStorage.setItem("listaCompra",JSON.stringify(carrito));
+setTimeout(() =>{
+    localStorage.getItem("listaCompra") ?? localStorage.setItem("listaCompra",JSON.stringify(carrito));
+    recuperarLocalStorage();
+    
+},1000);
 
-recuperarLocalStorage();
+
+
 
