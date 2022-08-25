@@ -98,23 +98,27 @@ const mostrarProductos = async() =>{
             agregarCarrito(id);
         }); 
     })
+
+    const recuperarLocalStorage = () => {
+
+        if(localStorage != null && localStorage.getItem("listaCompra") != "" ){
+    
+            let localCarrito = JSON.parse(localStorage.getItem("listaCompra"));
+            for (let i = 0; i < localCarrito.length; i++) {
+                const element = localCarrito[i].id;
+                agregarCarrito(element);
+            }
+        }
+    }
+    localStorage.getItem("listaCompra") ?? localStorage.setItem("listaCompra",JSON.stringify(carrito));
+    recuperarLocalStorage();
     
 }
 
 mostrarProductos();
 
 
-const recuperarLocalStorage = () => {
 
-    if(localStorage != null && localStorage.getItem("listaCompra") != "" ){
-
-        let localCarrito = JSON.parse(localStorage.getItem("listaCompra"));
-        for (let i = 0; i < localCarrito.length; i++) {
-            const element = localCarrito[i].id;
-            agregarCarrito(element);
-        }
-    }
-}
 
 
 const agregarCarrito = (productoId) =>{
@@ -244,10 +248,9 @@ const filtrarProductos = e=>{
 }
 
 setTimeout(() =>{
-    localStorage.getItem("listaCompra") ?? localStorage.setItem("listaCompra",JSON.stringify(carrito));
-    recuperarLocalStorage();
+
     
-},1000);
+},2000);
 
 
 
