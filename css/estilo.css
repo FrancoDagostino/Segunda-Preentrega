@@ -84,33 +84,35 @@ main {
       main .Card {
         width: 1200px; } }
   main .CardCarrito {
-    width: 400px;
-    height: auto;
+    width: 500px;
+    height: 800px;
     background-color: white;
-    margin-top: 3.5%; }
+    margin-top: 3.5%;
+    overflow-y: scroll; }
+    main .CardCarrito hr {
+      opacity: 0.3; }
     main .CardCarrito section {
-      text-align: center;
-      margin-top: 5%; }
-      main .CardCarrito section h3 {
-        padding-bottom: 3%; }
-      main .CardCarrito section hr {
-        opacity: 0.3; }
+      margin-top: 10%;
+      display: flex;
+      justify-content: space-around; }
       main .CardCarrito section .addProducto {
-        margin-top: 3%;
-        display: flex;
         justify-content: space-around; }
-        main .CardCarrito section .addProducto .iconAdd {
-          font-size: 2em;
-          background: none;
-          border: 0;
-          cursor: pointer;
-          color: red; }
-          main .CardCarrito section .addProducto .iconAdd:hover {
-            color: blue;
-            transform: scale(1.2); }
         main .CardCarrito section .addProducto h4 {
-          font-size: 1.7em;
-          margin-top: 2%; }
+          font-size: 1.2em;
+          margin-top: 15%; }
+      main .CardCarrito section .iconAdd {
+        font-size: 2em;
+        background: none;
+        border: 0;
+        cursor: pointer;
+        color: red;
+        margin-left: 5%; }
+        main .CardCarrito section .iconAdd:hover {
+          color: blue;
+          transform: scale(1.2); }
+  main .CardCarrito::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; }
   main .inv {
     display: none; }
   main .vis {

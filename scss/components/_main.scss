@@ -69,42 +69,43 @@ main{
         }
     }
     .CardCarrito{
-        width: 400px;
-        height: auto;
+        width: 500px;
+        height: 800px;
         background-color: white;
         margin-top: 3.5%;
-
+        overflow-y:scroll;
+        hr{
+            opacity: 0.3;
+        }
         section{
-            text-align: center;
-            margin-top: 5%;
-            h3{
-                padding-bottom: 3%;
-            }
-            hr{
-                opacity: 0.3;
-            }
+            margin-top: 10%;
+            display: flex;
+            justify-content: space-around;
             .addProducto{
-                margin-top: 3%;
-                display: flex;
                 justify-content: space-around;
-                .iconAdd{
-                    font-size: 2em;
-                    background: none;
-                    border: 0;
-                    cursor: pointer;
-                    color: red;
-                    &:hover{
-                        color:blue;
-                        transform: scale(1.2);
-                    }
-                }
                 h4{
-                    font-size: 1.7em;
-                    margin-top: 2%;
+                    font-size: 1.2em;
+                    margin-top: 15%;
+                }
+            }
+            .iconAdd{
+                font-size: 2em;
+                background: none;
+                border: 0;
+                cursor: pointer;
+                color: red;
+                margin-left: 5%;
+                &:hover{
+                    color:blue;
+                    transform: scale(1.2);
                 }
             }
         }
         
+    }
+    .CardCarrito::-webkit-scrollbar{
+            width: 8px;
+            height: 8px;
     }
     .inv{
         display: none;

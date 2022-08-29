@@ -1,13 +1,14 @@
 
 
 class Productos{
-    constructor (id,nombre,precio,stock,img){
+    constructor (id,nombre,precio,stock,img,cantidad){
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.vendido = false;
         this.stock = stock
         this.img = img
+        this.cantidad = cantidad
     }
     
     sumaIva(){
@@ -62,10 +63,9 @@ const apiProductos = async() =>{
         const response = await fetch(`https://restserver-node-producto.herokuapp.com/api/productos`);
 
         const {producto} = await response.json();
-        console.log(producto);
 
         producto.forEach(dp => {
-            productos.push(new Productos(dp._id,dp.nombre.toString(),dp.precio,dp.stock,dp.img))
+            productos.push(new Productos(dp._id,dp.nombre.toString(),dp.precio,dp.stock,dp.img,0))
         });
 }
 
@@ -95,7 +95,7 @@ const mostrarProductos = async() =>{
                     width:400
                     
                   })
-            agregarCarrito(id);
+            agregarCarrito(id,true);
         }); 
     })
 
@@ -104,10 +104,11 @@ const mostrarProductos = async() =>{
         if(localStorage != null && localStorage.getItem("listaCompra") != "" ){
     
             let localCarrito = JSON.parse(localStorage.getItem("listaCompra"));
-            for (let i = 0; i < localCarrito.length; i++) {
-                const element = localCarrito[i].id;
-                agregarCarrito(element);
-            }
+            acumCarr = JSON.parse(localStorage.getItem("cantidad"));
+            cantProd.innerHTML = acumCarr;
+            localCarrito.forEach(({id,cantidad}) => {
+                agregarCarrito(id,false,cantidad)
+            })
         }
     }
     localStorage.getItem("listaCompra") ?? localStorage.setItem("listaCompra",JSON.stringify(carrito));
@@ -121,23 +122,34 @@ mostrarProductos();
 
 
 
-const agregarCarrito = (productoId) =>{
+const agregarCarrito = (productoId,add=false,cantidad=0) =>{
     const item = productos.find(p => p.id === productoId)
+    console.log(item);
+    if(add == true){
+        acumCarr++;
+        item.cantidad++;
+        localStorage.setItem("cantidad", JSON.stringify(acumCarr));
+    }else{
+        item.cantidad = cantidad
+    }
     carrito.push(item);
-    acumCarr++;
-    cantProd.innerHTML = `${acumCarr}`
-
+    console.log(carrito);
+    cantProd.innerHTML = `${acumCarr}`;
+    carrito = [...new Set(carrito)];
     actualizaCarrito();
 }
 
 const eliminarCarrito= (productoId)=>{
     const item = carrito.find(c => c.id === productoId);
-    let indice = carrito.indexOf(item)
-    carrito.splice(indice,1)
-    acumCarr--;
-    cantProd.innerHTML = `${acumCarr}`
+    let indice = carrito.indexOf(item);
+    carrito.splice(indice,1);
+    acumCarr -= item.cantidad;
+    item.cantidad = 0;
+    localStorage.setItem("cantidad", JSON.stringify(acumCarr));
+    cantProd.innerHTML = `${acumCarr}`;
     if(acumCarr == 0){
-        cantProd.innerHTML = ""
+        cantProd.innerHTML = "";
+        localStorage.setItem("cantidad", JSON.stringify(""));
     }
 
     Swal.fire(
@@ -150,20 +162,20 @@ const eliminarCarrito= (productoId)=>{
 
 const actualizaCarrito = () =>{
     carritoHTML.innerHTML = "";
-    carrito.forEach(({nombre,precio,id,img}) => {
-        console.log(id);
+    carrito.forEach(({nombre,precio,id,img,cantidad}) => {
         carritoHTML.innerHTML+=`
-        <section>
-        <h3>${nombre}</h3>
-        <img src="${img}" alt="" width="250px" height="180px">
-        <div class="addProducto"> 
-            <h4>$ ${precio}</h4>
-            <button onclick="eliminarCarrito('${id}')" class="iconAdd"><i class="fas fa-trash"></i></button>
-        </div>
         <hr/>
+        <section>
+        <img src="${img}" alt="" width="150px" height="90px">
+        <div class="addProducto"> 
+            <h3>${nombre}</h3>
+            <h4>$ ${precio * cantidad}</h4>
+            <h4>Cantidad:${cantidad}</h4>
+            </div>
+            <button onclick="eliminarCarrito('${id}')" class="iconAdd"><i class="fas fa-trash"></i></button>
         </section>`;
     })
-    
+    console.log("actualizarCarrito",carrito)
     localStorage.setItem("listaCompra", JSON.stringify(carrito));
     carritoHTML.innerHTML+=`<button id="btnFinalizarCompra">Finalizar Compra</button>`;
     
@@ -192,7 +204,6 @@ btnIconEcomercce.addEventListener('click',()=>{
 /*Filtrar productos */
 
 let formFiltro = document.getElementById("formFiltros");
-console.log(formFiltro)
 
 formFiltro.addEventListener("submit",e=>{
     filtrarProductos(e)
@@ -246,11 +257,6 @@ const filtrarProductos = e=>{
     Divcarrito.classList = "CardCarrito inv  animate__animated animate__fadeInLeft";
 
 }
-
-setTimeout(() =>{
-
-    
-},2000);
 
 
 
