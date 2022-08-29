@@ -1,7 +1,7 @@
 
 
 class Productos{
-    constructor (id,nombre,precio,stock,img,cantidad){
+    constructor (id,nombre,precio,stock,img,cantidad,categoria){
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
@@ -9,6 +9,7 @@ class Productos{
         this.stock = stock
         this.img = img
         this.cantidad = cantidad
+        this.categoria = categoria
     }
     
     sumaIva(){
@@ -64,8 +65,9 @@ const apiProductos = async() =>{
 
         const {producto} = await response.json();
 
+        console.log(producto);
         producto.forEach(dp => {
-            productos.push(new Productos(dp._id,dp.nombre.toString(),dp.precio,dp.stock,dp.img,0))
+            productos.push(new Productos(dp._id,dp.nombre.toString(),dp.precio,dp.stock,dp.img,0,dp.categoria))
         });
 }
 
@@ -115,10 +117,6 @@ const mostrarProductos = async() =>{
     recuperarLocalStorage();
     
 }
-
-mostrarProductos();
-
-
 
 
 
@@ -182,12 +180,7 @@ const actualizaCarrito = () =>{
     let btnFinalizarCompra = document.getElementById("btnFinalizarCompra");
 
     btnFinalizarCompra.addEventListener('click',()=>{
-        const total = carrito.reduce((acc,c) => acc + c.precio,0);
-        Swal.fire(
-            'Su compra se realizo con Exito!',
-            `El monto total es: ${total}`,
-            'success'
-          )
+        finalizarCompra();
     })
 }
 
@@ -214,8 +207,8 @@ const filtrarProductos = e=>{
 
    
     let categoriaFiltrar
-    if(document.getElementById("mother").checked){
-        categoriaFiltrar = document.getElementById("mother").value;
+    if(document.getElementById("Placa_Madre").checked){
+        categoriaFiltrar = document.getElementById("Placa_Madre").value;
     }
     
     if(document.getElementById("cpu").checked){
@@ -223,25 +216,27 @@ const filtrarProductos = e=>{
         categoriaFiltrar = document.getElementById("cpu").value;
     } 
 
-    if(document.getElementById("ram").checked){
+    if(document.getElementById("Memoria_RAM").checked){
         
-        categoriaFiltrar = document.getElementById("ram").value;
+        categoriaFiltrar = document.getElementById("Memoria_RAM").value;
     } 
 
-    if(document.getElementById("grafica").checked){
+    if(document.getElementById("Tarjeta_Grafica").checked){
         
-        categoriaFiltrar = document.getElementById("grafica").value;
+        categoriaFiltrar = document.getElementById("Tarjeta_Grafica").value;
     } 
 
-    let prodFiltrado = productos.filter(p => p.nombre.toLowerCase() == categoriaFiltrar.toLowerCase());
 
 
+    let prodFiltrado = productos.filter(p => p.categoria == categoriaFiltrar);
+
+    console.log(prodFiltrado);
     contenedorMain.innerHTML = "";
-    prodFiltrado.forEach( ({nombre,precio,id}) => {
+    prodFiltrado.forEach( ({nombre,precio,id,img}) => {
         const section = document.createElement('section');
         section.innerHTML += `
         <h3>${nombre}</h3>
-        <img src="imgs/mother.webp" alt="" width="250px" height="180px">
+        <img src="${img}" alt="" width="250px" height="180px">
         <div class="addProducto"> 
             <h4>${precio}</h4>
             <button id=agregar${id} class="iconAdd"><i class="fas fa-plus-circle"></i></button>
@@ -251,12 +246,28 @@ const filtrarProductos = e=>{
         const boton = document.getElementById(`agregar${id}`);
     
             boton.addEventListener('click',()=>{
-            agregarCarrito(id);
+            agregarCarrito(id,true);
         });
     })
     Divcarrito.classList = "CardCarrito inv  animate__animated animate__fadeInLeft";
 
 }
+
+const finalizarCompra = () => {
+            const total = carrito.reduce((acc,c) => acc + (c.cantidad * c.precio),0);
+        Swal.fire(
+            'Su compra se realizo con Exito!',
+            `El monto total es: ${total}`,
+            'success'
+          )
+          localStorage.clear();
+          carritoHTML.innerHTML = "";
+          cantProd.innerHTML="";
+          Divcarrito.classList = "CardCarrito inv  animate__animated animate__fadeInLeft";
+
+}
+
+mostrarProductos();
 
 
 
