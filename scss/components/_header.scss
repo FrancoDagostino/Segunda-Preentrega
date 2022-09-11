@@ -3,6 +3,7 @@ header{
     background-color: #3c1276;
     display: flex;
     width: 100vw;
+    height: 96px;
     justify-content: space-around;
     align-items: center;
     position: fixed;
@@ -27,4 +28,7 @@ h1{
 .cantProd{
     font-size: 4rem;
     color:black; 
+}
+.ocultarItems{
+    display: none;
 }

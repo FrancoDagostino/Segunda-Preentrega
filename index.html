@@ -20,8 +20,8 @@
 <body>
     <header>
         <a href="index.html"><h1>Productos de PC</h1></a>
-        <div>
-            <button id="btnIconEcomercce"class="icon"><i class="fa-brands fa-itch-io"></i></button>
+        <div class="ocultarListaCompra">
+            <button id="btnIconEcomercce" class="icon"><i class="fa-brands fa-itch-io ocultarListaCompra"></i></button>
             <label class="cantProd"></label>
         </div>
     </header>
@@ -65,7 +65,7 @@
 
         </div>
         <div class="Card">
-            <h2>Productos Destacados</h2>
+            <h2>Productos</h2>
             <hr>
             <div>
                 <div class="categorias">
@@ -79,7 +79,7 @@
                           <label for="ram">RAM</label><br>
                           <input type="radio" id="Tarjeta_Grafica" name="categorias" value="Tarjeta_Grafica">
                           <label for="grafica">Tarjeta Grafica</label><br>
-                          <input type="submit" id="filtrarProduc" name="buscar" value="Buscar">
+                          <input type="submit" id="filtrarProduc" class="btnSuccess" name="buscar" value="Filtrar">
                     </form>
                 </div>
                     <hr>
@@ -94,5 +94,6 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="js/clases.js"></script>
 <script src="js/app.js"></script>
 </html>

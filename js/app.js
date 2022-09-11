@@ -1,32 +1,8 @@
 
 
-class Productos{
-    constructor (id,nombre,precio,stock,img,cantidad,categoria){
-        this.id = id;
-        this.nombre = nombre;
-        this.precio = precio;
-        this.vendido = false;
-        this.stock = stock
-        this.img = img
-        this.cantidad = cantidad
-        this.categoria = categoria
-    }
-    
-    sumaIva(){
-        this.precio = this.precio * 1.21;
-    }
 
-    }
-    class ListaCompra{
-        constructor(id,lista,metodopago,descuento){
-                this.id = id;
-                this.lista = lista;
-                this.metodopago = metodopago;
-                this.descuento = descuento;
-            }
-        }
     
-    
+    /* Variables y Constantes utilizadas*/
     const productos =[];
     const listacompras = [];
     let carrito = [];
@@ -42,9 +18,10 @@ class Productos{
     const cardFinalizarCompra = document.querySelector(".cardFinalizarCompra");
     const cuotas = document.getElementById("cuotas");
     const formFinCompra = document.getElementById("formFinCompra");
+    const btnIconEcomercce = document.getElementById("btnIconEcomercce");
+    
     /* Consumir API Producto*/
-    
-    
+     
 const apiProductos = async() =>{
         
         const response = await fetch(`https://restserver-node-producto.herokuapp.com/api/productos`);
@@ -56,6 +33,7 @@ const apiProductos = async() =>{
         });
 }
 
+/* Renderiza los productos en el DOM */
 const mostrarProductos = async() =>{
     await apiProductos();
     for(const producto of productos) producto.sumaIva();
@@ -86,6 +64,9 @@ const mostrarProductos = async() =>{
         }); 
     })
 
+    /* Recupera los datos del localstorag. Le pasa el id y la cantidad
+       Para poder volver a renderizarlos en el carrito
+    */
     const recuperarLocalStorage = () => {
 
         if(localStorage != null && localStorage.getItem("listaCompra") != "" ){
@@ -140,7 +121,7 @@ const eliminarCarrito= (productoId)=>{
       )
     actualizaCarrito();
 }
-
+/* Al agregar un item nuevo al carrito, este se borra y se vuelve a renderizar */
 const actualizaCarrito = () =>{
     carritoHTML.innerHTML = "";
     carrito.forEach(({nombre,precio,id,img,cantidad}) => {
@@ -174,7 +155,7 @@ const actualizaCarrito = () =>{
 }
 
 
-let btnIconEcomercce = document.getElementById("btnIconEcomercce");
+
 
 /*Mostrar/Ocultar Div Carrito*/
 btnIconEcomercce.addEventListener('click',()=>{
@@ -183,7 +164,7 @@ btnIconEcomercce.addEventListener('click',()=>{
 })
 
 
-/*Filtrar productos */
+/*Filtrar productos seleccionando RaddioButton */
 
 let formFiltro = document.getElementById("formFiltros");
 
@@ -217,8 +198,8 @@ const filtrarProductos = e=>{
 
 
 
+    /* A traves de la categoria se buscan los productos a filtrar y se vuelve a renderizar el componente */
     let prodFiltrado = productos.filter(p => p.categoria == categoriaFiltrar);
-
     contenedorMain.innerHTML = "";
     prodFiltrado.forEach( ({nombre,precio,id,img}) => {
         const section = document.createElement('section');
@@ -241,12 +222,18 @@ const filtrarProductos = e=>{
 
 }
 
+/* Se oculta el card donde aparecen todos los productos y aparece el card para ingresar los datos y finalizar la compra */
 const finalizarCompra = (total) => {
-        cardFinalizarCompra.classList = "cardFinalizarCompra mostrarListaCompra"
-
+          cantProd.innerText='';
+          cardFinalizarCompra.classList = "cardFinalizarCompra mostrarListaCompra"
+          btnIconEcomercce.classList.toggle("ocultarItems");
+          console.log(btnIconEcomercce)           
           Divcarrito.classList = "CardCarrito inv  animate__animated animate__fadeInLeft";
           divItems.classList.toggle("ocultarItems")
           let localCarrito = JSON.parse(localStorage.getItem("listaCompra"));
+          
+          /* A traves del localstorage recupero los datos y renderizo el array de productos */
+          
           localCarrito.forEach(({nombre,precio,id,img,cantidad}) => {
             productosFinalizar.innerHTML+=`
             <section>
@@ -267,10 +254,14 @@ const finalizarCompra = (total) => {
         `;
         cuotas.innerHTML=`
         <option value="1">1 Pagos de $ ${total.toFixed(2)}</option>
-        <option value="3">3 Pagos de $ ${total / 3}</option>
-        <option value="6">6 Pagos de $ ${total /6}</option>
-        <option value="12">12 Pagos de $ ${total /12}</option>
+        <option value="3">3 Pagos de $ ${(total / 3).toFixed(2)}</option>
+        <option value="6">6 Pagos de $ ${(total /6).toFixed(2)}</option>
+        <option value="12">12 Pagos de $ ${(total /12).toFixed(2)}</option>
         `
+        /* Se utilizo Jquery para capturar el evento click del button para finalizar la compra.
+            Se genera una alerta donde apareceran todos los datos cliente y precio final.
+            Luego se borran losdatos de localstorage y se vuelve a cargar la web para ir a la pantalla principal
+        */
         $(document).ready(function (){
             $("#btnFinalizar").click((e)=>{
                 let totalCuotas = total / parseFloat($('#cuotas').val())

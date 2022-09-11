@@ -22,8 +22,22 @@ main{
         }
         .categorias{
             margin-top: 2%;
-            input{
-                margin-top: 2%;
+            margin-left: 2%;
+            .btnSuccess{
+                border-radius: 10px;
+                display: inline-block;
+                padding: 2px 2px;
+                text-decoration: none;
+                text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+                box-shadow: 0 1px 1px rgba(0,0,0,0.3); 
+                    color: white;
+                    background-color: #3CC93F;
+                    margin-top: 2%;
+                    width: 30%;
+            }
+            .btnSuccess:hover{
+                background-color: #37B839;	
+                cursor: pointer;
             }
 
         }

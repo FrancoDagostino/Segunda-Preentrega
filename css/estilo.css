@@ -13,6 +13,7 @@ header {
   background-color: #3c1276;
   display: flex;
   width: 100vw;
+  height: 96px;
   justify-content: space-around;
   align-items: center;
   position: fixed;
@@ -35,6 +36,9 @@ h1 {
   font-size: 4rem;
   color: black; }
 
+.ocultarItems {
+  display: none; }
+
 main {
   display: flex;
   justify-content: space-between; }
@@ -54,9 +58,22 @@ main {
       padding-top: 2%;
       padding-bottom: 2%; }
     main .Card .categorias {
-      margin-top: 2%; }
-      main .Card .categorias input {
-        margin-top: 2%; }
+      margin-top: 2%;
+      margin-left: 2%; }
+      main .Card .categorias .btnSuccess {
+        border-radius: 10px;
+        display: inline-block;
+        padding: 2px 2px;
+        text-decoration: none;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+        color: white;
+        background-color: #3CC93F;
+        margin-top: 2%;
+        width: 30%; }
+      main .Card .categorias .btnSuccess:hover {
+        background-color: #37B839;
+        cursor: pointer; }
     main .Card .cardProducto {
       text-align: center;
       margin-bottom: 5%; }
