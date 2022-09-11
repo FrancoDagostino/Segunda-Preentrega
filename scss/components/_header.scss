@@ -1,6 +1,6 @@
 
 header{
-    background-color: rgb(170, 255, 0);
+    background-color: #3c1276;
     display: flex;
     width: 100vw;
     justify-content: space-around;
@@ -9,20 +9,22 @@ header{
     z-index: 1;
     a{
         text-decoration: none;
-        color: black;
+        color:black;
     }
 
 }
 
 h1{
-    size: 2em;
+    font-size: 2em;
 }
 .icon{
     font-size: 4em;
     background: none;
     border: 0;
     cursor: pointer;
+    color:black;
 }
 .cantProd{
     font-size: 4rem;
+    color:black; 
 }

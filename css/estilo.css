@@ -7,10 +7,10 @@
 
 body {
   font-family: 'Josefin Sans', sans-serif;
-  background-color: #4e4e4e; }
+  background-color: #e8e8ed; }
 
 header {
-  background-color: #aaff00;
+  background-color: #3c1276;
   display: flex;
   width: 100vw;
   justify-content: space-around;
@@ -22,30 +22,33 @@ header {
     color: black; }
 
 h1 {
-  size: 2em; }
+  font-size: 2em; }
 
 .icon {
   font-size: 4em;
   background: none;
   border: 0;
-  cursor: pointer; }
+  cursor: pointer;
+  color: black; }
 
 .cantProd {
-  font-size: 4rem; }
+  font-size: 4rem;
+  color: black; }
 
 main {
   display: flex;
   justify-content: space-between; }
+  main hr {
+    opacity: 0.3; }
   main .Card {
     margin-bottom: 20%;
-    width: 360px;
+    width: 1200px;
     height: auto;
-    background-color: white;
+    background-color: #ffffff;
     margin-top: 8%;
-    margin-left: 15%; }
-    @media screen and (max-width: 360px) {
-      main .Card {
-        margin-left: 0%; } }
+    margin-left: 17%;
+    border-radius: 1%;
+    box-shadow: #a5a5a5 2px 2px 2px 2px; }
     main .Card h2 {
       text-align: center;
       padding-top: 2%;
@@ -71,9 +74,8 @@ main {
             background: none;
             border: 0;
             cursor: pointer;
-            color: green; }
+            color: #3cc93f; }
             main .Card .cardProducto section .addProducto .iconAdd:hover {
-              color: blue;
               transform: scale(1.2); }
           main .Card .cardProducto section .addProducto h4 {
             font-size: 1.5em;
@@ -83,25 +85,35 @@ main {
           display: flex;
           justify-content: space-between;
           flex-wrap: wrap; } }
-    @media screen and (min-width: 960px) {
+    @media screen and (max-width: 1400px) {
       main .Card {
-        width: 1200px; } }
+        width: 900px; } }
+    @media screen and (max-width: 1250px) {
+      main .Card {
+        width: 700px; } }
+    @media screen and (max-width: 360px) {
+      main .Card {
+        margin-left: 0%; } }
+    @media screen and (max-width: 900px) {
+      main .Card {
+        width: 500px;
+        margin-top: 10%; } }
   main .CardCarrito {
     width: 500px;
     height: 800px;
     background-color: white;
     margin-top: 3.5%;
     overflow-y: scroll; }
-    main .CardCarrito hr {
-      opacity: 0.3; }
     main .CardCarrito section {
       margin-top: 10%;
       display: flex;
       justify-content: space-around; }
       main .CardCarrito section .addProducto {
         justify-content: space-around; }
+        main .CardCarrito section .addProducto h3 {
+          font-size: 1.2em; }
         main .CardCarrito section .addProducto h4 {
-          font-size: 1.2em;
+          font-size: 1em;
           margin-top: 15%; }
       main .CardCarrito section .iconAdd {
         font-size: 2em;
@@ -123,3 +135,99 @@ main {
     @media screen and (max-width: 360px) {
       main .vis {
         position: absolute; } }
+  main .finalizarCompra {
+    display: flex;
+    justify-content: space-between; }
+    @media screen and (max-width: 1300px) {
+      main .finalizarCompra {
+        display: block; } }
+    main .finalizarCompra .carritoTotal {
+      color: #090909;
+      margin-top: 5%;
+      font-size: 1.6rem;
+      margin-left: 1%; }
+    main .finalizarCompra .btnSuccess {
+      border-radius: 3px;
+      display: inline-block;
+      padding: 15px 15px;
+      text-decoration: none;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+      color: white;
+      background-color: #3CC93F;
+      margin-top: 1.5%; }
+    main .finalizarCompra .btnSuccess:hover {
+      background-color: #37B839;
+      cursor: pointer; }
+  main .ocultarItems {
+    display: none; }
+  main .mostrarListaCompra {
+    display: block; }
+  main .ocultarListaCompra {
+    display: none; }
+  main .cardFinalizarCompra {
+    margin-bottom: 20%;
+    width: 1400px;
+    height: 1400px;
+    background-color: white;
+    margin-top: 8%;
+    margin-left: 13%;
+    border-radius: 1%; }
+    main .cardFinalizarCompra h2 {
+      text-align: center;
+      padding-top: 2%;
+      padding-bottom: 2%; }
+    main .cardFinalizarCompra .cardDatos {
+      display: flex;
+      justify-content: flex-start; }
+      main .cardFinalizarCompra .cardDatos label {
+        font-weight: bold; }
+      main .cardFinalizarCompra .cardDatos input {
+        font-weight: bold; }
+      main .cardFinalizarCompra .cardDatos .form-control {
+        font-weight: bold; }
+      main .cardFinalizarCompra .cardDatos .productosComprar {
+        width: 400px;
+        height: auto;
+        background-color: white;
+        margin-top: 2%;
+        margin-left: 5%; }
+        main .cardFinalizarCompra .cardDatos .productosComprar section {
+          display: flex;
+          justify-content: space-around; }
+          main .cardFinalizarCompra .cardDatos .productosComprar section .addProducto {
+            margin-top: 3%; }
+            main .cardFinalizarCompra .cardDatos .productosComprar section .addProducto h3 {
+              font-size: 1.2em; }
+            main .cardFinalizarCompra .cardDatos .productosComprar section .addProducto h4 {
+              font-size: 1.2em;
+              margin-top: 3%; }
+      main .cardFinalizarCompra .cardDatos .cargaDatos {
+        width: 700px;
+        height: 800px;
+        margin-top: 2%;
+        margin-left: 14%; }
+        main .cardFinalizarCompra .cardDatos .cargaDatos .form-group {
+          margin-top: 3%;
+          width: 100%;
+          padding-left: 20px; }
+          main .cardFinalizarCompra .cardDatos .cargaDatos .form-group label {
+            margin-bottom: 1.5%;
+            font-size: 1.2rem; }
+      main .cardFinalizarCompra .cardDatos .bntFinalizar {
+        width: 100%;
+        text-align: center; }
+        main .cardFinalizarCompra .cardDatos .bntFinalizar .btnSuccess {
+          border-radius: 3px;
+          display: inline-block;
+          padding: 10px 10px;
+          text-decoration: none;
+          text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+          color: white;
+          background-color: #3CC93F;
+          margin-top: 10%;
+          width: 80%; }
+        main .cardFinalizarCompra .cardDatos .bntFinalizar .btnSuccess:hover {
+          background-color: #37B839;
+          cursor: pointer; }

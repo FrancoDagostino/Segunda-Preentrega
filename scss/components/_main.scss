@@ -1,17 +1,20 @@
 main{
     display: flex;
     justify-content: space-between;
+    hr{
+        opacity: 0.3;
+    }
     .Card{
         margin-bottom: 20%;
-        width: 360px;
+        width: 1200px;
         height: auto;
-        background-color: white;
+        background-color: #ffffff;
         margin-top: 8%;
-        margin-left: 15%;
-        @media screen and (max-width:360px) {
-            
-            margin-left: 0%;
-        }
+        margin-left: 17%;
+        border-radius: 1%;
+        box-shadow: rgb(165, 165, 165) 2px 2px 2px 2px;
+        
+
         h2{
             text-align: center;
             padding-top: 2%;
@@ -44,9 +47,8 @@ main{
                         background: none;
                         border: 0;
                         cursor: pointer;
-                        color: green;
+                        color: #3cc93f;
                         &:hover{
-                            color:blue;
                             transform: scale(1.2);
                         }
                     }
@@ -63,10 +65,22 @@ main{
                 flex-wrap: wrap;
             }
         }
-
-        @media screen and (min-width:960px) {
-            width: 1200px;
+        @media screen and (max-width:1400px) {
+            width: 900px;
         }
+        @media screen and (max-width:1250px){
+            width: 700px;
+        }
+        @media screen and (max-width:360px) {
+            
+            margin-left: 0%;
+        }
+        @media screen and(max-width:900px){
+            width: 500px;
+            margin-top: 10%;
+        }
+
+
     }
     .CardCarrito{
         width: 500px;
@@ -74,17 +88,23 @@ main{
         background-color: white;
         margin-top: 3.5%;
         overflow-y:scroll;
-        hr{
-            opacity: 0.3;
+        @media screen and (max-width:1300px) {
+            
         }
+
         section{
+
             margin-top: 10%;
             display: flex;
             justify-content: space-around;
             .addProducto{
                 justify-content: space-around;
+                h3{
+                        font-size: 1.2em;
+                }
                 h4{
-                    font-size: 1.2em;
+
+                    font-size: 1em;
                     margin-top: 15%;
                 }
             }
@@ -100,8 +120,7 @@ main{
                     transform: scale(1.2);
                 }
             }
-        }
-        
+        } 
     }
     .CardCarrito::-webkit-scrollbar{
             width: 8px;
@@ -116,5 +135,135 @@ main{
             
             position: absolute;
         }
+  
     }
+    .finalizarCompra{
+        display: flex;
+        justify-content: space-between;
+        @media screen and (max-width:1300px) {
+            
+            display: block;
+        }
+        .carritoTotal{
+            color:rgb(9, 9, 9);
+            margin-top: 5%;
+            font-size: 1.6rem;
+            margin-left: 1%;
+            
+        }
+        .btnSuccess{
+            border-radius: 3px;
+                display: inline-block;
+                padding: 15px 15px;
+                text-decoration: none;
+                text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+                box-shadow: 0 1px 1px rgba(0,0,0,0.3); 
+                color: white;
+                background-color: #3CC93F;
+                margin-top: 1.5%;
+        }
+        .btnSuccess:hover{
+            background-color: #37B839;	
+            cursor: pointer;
+        }
+    }
+
+    .ocultarItems{
+        display: none;
+    }
+    .mostrarListaCompra{
+        display: block;
+    }
+    .ocultarListaCompra{
+        display: none;
+    }
+    .cardFinalizarCompra{
+        margin-bottom: 20%;
+        width: 1400px;
+        height: 1400px;
+        background-color: white;
+        margin-top: 8%;
+        margin-left: 13%;
+        border-radius: 1%;
+        h2{
+            text-align: center;
+            padding-top: 2%;
+            padding-bottom: 2%;
+        }
+        .cardDatos{
+            display: flex;
+            justify-content: flex-start;
+            label{
+                font-weight:bold;
+            }
+            input{
+                font-weight:bold;
+            }
+            .form-control{
+                font-weight: bold;
+            }
+            .productosComprar{
+                width: 400px;
+                height: auto;
+                background-color: white;
+                margin-top: 2%;
+                margin-left: 5%;
+               
+                section{
+                    display: flex;
+                    justify-content: space-around;
+                    .addProducto{
+                        margin-top: 3%;
+                        h3{
+                            font-size: 1.2em;
+                        }
+                        h4{
+                            font-size: 1.2em;
+                            margin-top: 3%;
+                        }
+                    }
+                }
+
+            }
+            .cargaDatos{
+                width: 700px;
+                height: 800px;
+                margin-top: 2%;
+                margin-left: 14%;
+                .form-group{
+                    margin-top: 3%;
+                    width: 100%;
+                    padding-left: 20px;
+                    label{
+                        margin-bottom: 1.5%;
+                        font-size: 1.2rem;
+                    }
+
+                }
+            }
+            .bntFinalizar{
+                width: 100%;
+                text-align: center;
+                .btnSuccess{
+                    border-radius: 3px;
+                        display: inline-block;
+                        padding: 10px 10px;
+                        text-decoration: none;
+                        text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+                        box-shadow: 0 1px 1px rgba(0,0,0,0.3); 
+                        color: white;
+                        background-color: #3CC93F;
+                        margin-top: 10%;
+                        width: 80%;
+                }
+                .btnSuccess:hover{
+                    background-color: #37B839;	
+                    cursor: pointer;
+                }
+                
+            }
+        }
+
+    }
+
 }

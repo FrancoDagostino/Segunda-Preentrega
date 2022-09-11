@@ -16,33 +16,15 @@ class Productos{
         this.precio = this.precio * 1.21;
     }
 
-    /* Se comenta el codigo hasta poder implementarlo */
-
-//      productoElegidos(cantArticulo,productos,listaProductosMostrar){
-
-//         let compra = [];
-//         for (let i = 0; i < cantArticulo; i++) {
-    
-//             let productoId = parseInt(prompt(listaProductosMostrar + "\n" + productos.map(p => `${p.id}:  ${p.nombre}  ${p.precio} \n`)));
-//             compra[i] = productos.find(p => p.id === productoId);
-//             productos[productoId - 1].vendido = true;
-//             if(productos[productoId - 1].stock === 0) return alert("el producto elegido no tiene mas stock")
-//             else productos[productoId - 1].stock -= 1;
-//         }
-//         return compra;
-//     }
-
-// }
-
-// class ListaCompra{
-    //     constructor(id,lista,metodopago,descuento){
-        //         this.id = id;
-        //         this.lista = lista;
-        //         this.metodopago = metodopago;
-        //         this.descuento = descuento;
-        //     }
-        // }
     }
+    class ListaCompra{
+        constructor(id,lista,metodopago,descuento){
+                this.id = id;
+                this.lista = lista;
+                this.metodopago = metodopago;
+                this.descuento = descuento;
+            }
+        }
     
     
     const productos =[];
@@ -55,7 +37,11 @@ class Productos{
     const cantProd = document.querySelector(".cantProd")
     const Divcarrito = document.querySelector(".CardCarrito");
     const carritoHTML = document.getElementById("carrito");
-    
+    const divItems = document.querySelector(".Card");
+    const productosFinalizar = document.querySelector(".productosComprar");
+    const cardFinalizarCompra = document.querySelector(".cardFinalizarCompra");
+    const cuotas = document.getElementById("cuotas");
+    const formFinCompra = document.getElementById("formFinCompra");
     /* Consumir API Producto*/
     
     
@@ -65,7 +51,6 @@ const apiProductos = async() =>{
 
         const {producto} = await response.json();
 
-        console.log(producto);
         producto.forEach(dp => {
             productos.push(new Productos(dp._id,dp.nombre.toString(),dp.precio,dp.stock,dp.img,0,dp.categoria))
         });
@@ -122,7 +107,6 @@ const mostrarProductos = async() =>{
 
 const agregarCarrito = (productoId,add=false,cantidad=0) =>{
     const item = productos.find(p => p.id === productoId)
-    console.log(item);
     if(add == true){
         acumCarr++;
         item.cantidad++;
@@ -131,7 +115,6 @@ const agregarCarrito = (productoId,add=false,cantidad=0) =>{
         item.cantidad = cantidad
     }
     carrito.push(item);
-    console.log(carrito);
     cantProd.innerHTML = `${acumCarr}`;
     carrito = [...new Set(carrito)];
     actualizaCarrito();
@@ -173,14 +156,20 @@ const actualizaCarrito = () =>{
             <button onclick="eliminarCarrito('${id}')" class="iconAdd"><i class="fas fa-trash"></i></button>
         </section>`;
     })
-    console.log("actualizarCarrito",carrito)
     localStorage.setItem("listaCompra", JSON.stringify(carrito));
-    carritoHTML.innerHTML+=`<button id="btnFinalizarCompra">Finalizar Compra</button>`;
+    const total = carrito.reduce((acc,c) => acc + (c.cantidad * c.precio),0);
+    carritoHTML.innerHTML+=`
+    <hr>
+    <div class="finalizarCompra">
+        <h3 class="carritoTotal">TOTAL $ ${total.toFixed(2)}</h3>
+        <button id="btnFinalizarCompra" class="btnSuccess">Finalizar Compra</button>
+    </div>
+    `;
     
     let btnFinalizarCompra = document.getElementById("btnFinalizarCompra");
 
     btnFinalizarCompra.addEventListener('click',()=>{
-        finalizarCompra();
+        finalizarCompra(total);
     })
 }
 
@@ -230,7 +219,6 @@ const filtrarProductos = e=>{
 
     let prodFiltrado = productos.filter(p => p.categoria == categoriaFiltrar);
 
-    console.log(prodFiltrado);
     contenedorMain.innerHTML = "";
     prodFiltrado.forEach( ({nombre,precio,id,img}) => {
         const section = document.createElement('section');
@@ -253,19 +241,62 @@ const filtrarProductos = e=>{
 
 }
 
-const finalizarCompra = () => {
-            const total = carrito.reduce((acc,c) => acc + (c.cantidad * c.precio),0);
-        Swal.fire(
-            'Su compra se realizo con Exito!',
-            `El monto total es: ${total}`,
-            'success'
-          )
-          localStorage.clear();
-          carritoHTML.innerHTML = "";
-          cantProd.innerHTML="";
-          Divcarrito.classList = "CardCarrito inv  animate__animated animate__fadeInLeft";
+const finalizarCompra = (total) => {
+        cardFinalizarCompra.classList = "cardFinalizarCompra mostrarListaCompra"
 
-}
+          Divcarrito.classList = "CardCarrito inv  animate__animated animate__fadeInLeft";
+          divItems.classList.toggle("ocultarItems")
+          let localCarrito = JSON.parse(localStorage.getItem("listaCompra"));
+          localCarrito.forEach(({nombre,precio,id,img,cantidad}) => {
+            productosFinalizar.innerHTML+=`
+            <section>
+            <img src="${img}" alt="" width="150px" height="90px">
+            <div class="addProducto"> 
+            <h3>${nombre}</h3>
+            <h4>$ ${precio * cantidad}</h4>
+            <h4>Cantidad:${cantidad}</h4>
+            </div>
+            </section>
+            <hr/>
+            `;
+        })
+        productosFinalizar.innerHTML+=`
+        <div class="finalizarCompra">
+            <h3 class="carritoTotal">TOTAL $ ${total.toFixed(2)}</h3>
+        </div>
+        `;
+        cuotas.innerHTML=`
+        <option value="1">1 Pagos de $ ${total.toFixed(2)}</option>
+        <option value="3">3 Pagos de $ ${total / 3}</option>
+        <option value="6">6 Pagos de $ ${total /6}</option>
+        <option value="12">12 Pagos de $ ${total /12}</option>
+        `
+        $(document).ready(function (){
+            $("#btnFinalizar").click((e)=>{
+                let totalCuotas = total / parseFloat($('#cuotas').val())
+                e.preventDefault();
+                Swal.fire({
+                    title: `Gracias por elegirnos ${$("#nombre").val()}`,
+                    text: `El pago fue realizado con Éxito
+                            Corrobora las instrucciones de retiro en tu corrreo: ${$("#email").val()}
+                            Pagaste ${total.toFixed(2)} en ${$('#cuotas').val()} cuota de: ${totalCuotas.toFixed(2)}`,
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Aceptar'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                        localStorage.clear();
+                        carritoHTML.innerHTML = "";
+                        cantProd.innerHTML="";
+                        location.reload()
+                    }
+                  })
+
+            })
+        })
+
+}       
 
 mostrarProductos();
 
